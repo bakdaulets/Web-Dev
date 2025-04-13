@@ -1,0 +1,31 @@
+<h2>Companies</h2>
+<ul *ngIf="companies.length > 0; else noCompanies">
+  <li *ngFor="let company of companies"
+      (click)="selectCompany(company)"
+      [class.selected]="company === selectedCompany"> {{ company.name }} ({{ company.city }})
+  </li>
+</ul>
+<ng-template #noCompanies>
+  <p>Loading companies or no companies found...</p>
+</ng-template>
+
+<hr>
+
+<div *ngIf="selectedCompany">
+  <h3>Vacancies at {{ selectedCompany.name }}</h3>
+  <div *ngIf="loadingVacancies">
+    <p>Loading vacancies...</p>
+  </div>
+  <ul *ngIf="!loadingVacancies && vacancies.length > 0; else noVacancies">
+    <li *ngFor="let vacancy of vacancies">
+      <strong>{{ vacancy.name }}</strong> - Salary: {{ vacancy.salary | currency:'USD' }} <p>{{ vacancy.description }}</p>
+    </li>
+  </ul>
+  <ng-template #noVacancies>
+    <p *ngIf="!loadingVacancies">No vacancies found for this company.</p>
+  </ng-template>
+</div>
+
+<div *ngIf="!selectedCompany">
+  <p>Click on a company to see its vacancies.</p>
+</div>
